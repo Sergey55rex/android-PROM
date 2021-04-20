@@ -68,7 +68,7 @@ class PostRepositoryImpl: PostRepository {
                 .close()
     }
 
-    override fun likeByIdAsync(callback: PostRepository.LikeByCallback) {
+    override fun likeByIdAsync(callback: PostRepository.PostCallback) {
         val request: Request = Request.Builder()
                 .url("${BASE_URL}/api/slow/posts/{id}/likes")
                 .build()
@@ -101,7 +101,7 @@ class PostRepositoryImpl: PostRepository {
             .close()
     }
 
-    override fun saveAsync(callback: PostRepository.SaveCallback) {
+    override fun saveAsync(callback: PostRepository.PostCallback) {
         val request: Request = Request.Builder()
                 .post(gson.toJson(callback).toRequestBody(jsonType))
                 .url("${BASE_URL}/api/slow/posts")
@@ -135,7 +135,7 @@ class PostRepositoryImpl: PostRepository {
             .close()
     }
 
-    override fun removeByIdAsync(callback: PostRepository.RemoveByIdCallback) {
+    override fun removeByIdAsync(callback: PostRepository.PostCallback) {
         val request: Request = Request.Builder()
                 .delete()
                 .url("${BASE_URL}/api/slow/posts/{id}")
