@@ -7,7 +7,6 @@ import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.repository.*
 import ru.netology.nmedia.util.SingleLiveEvent
 import java.io.IOException
-import kotlin.concurrent.thread
 
 private val empty = Post(
     id = 0,
@@ -46,12 +45,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         })
     }
 
-
     fun save() {
         edited.value?.let {
 
-                repository.save(it)
-                _postCreated.postValue(Unit)
+            repository.saveAsync(object : PostRepository.PostCallback{
+                override fun onSuccess(post: Post) {
+                }
+                override fun onError(e: Exception) {}
+            })
+            _postCreated.postValue(Unit)
 
         }
         edited.value = empty
@@ -70,25 +72,30 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likeById(id: Long) {
-         repository.likeById(id)
+        repository.likeByIdAsync(object : PostRepository.PostCallback{
+            override fun onSuccess(post: Post) {
+            }
+            override fun onError(e: Exception) {}
+        })
     }
-
-
 
     fun removeById(id: Long) {
 
-            // Оптимистичная модель
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
+        // Оптимистичная модель
+        val old = _data.value?.posts.orEmpty()
+        _data.postValue(
                 _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
+                        .filter { it.id != id }
                 )
-            )
-            try {
-                repository.removeById(id)
-            } catch (e: IOException) {
-                _data.postValue(_data.value?.copy(posts = old))
-            }
-
+        )
+        try {
+            repository.removeByIdAsync(object : PostRepository.PostCallback{
+                override fun onSuccess(post: Post) {
+                }
+                override fun onError(e: Exception) {}
+            })
+        } catch (e: IOException) {
+            _data.postValue(_data.value?.copy(posts = old))
+        }
     }
 }
