@@ -19,9 +19,38 @@ class PostRepositoryImpl: PostRepository {
 
 
     companion object {
-        private const val BASE_URL = "http://10.0.2.2:9999"
+        internal const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
     }
+
+
+//
+//    override fun avatarsAsyng(callback: PostRepository.GetAllCallback) {
+//        val request: Request = Request.Builder()
+//                .url("${BASE_URL}/api/slow/posts{id}/avatars/")
+//                .build()
+//
+//        client.newCall(request)
+//                .enqueue(object : Callback {
+//                    override fun onResponse(call: Call, response: Response) {
+//                        val body = response.body?.string() ?: throw RuntimeException("body is null")
+//                        try {
+//                            callback.onSuccess(gson.fromJson(body, typeToken.type))
+//                        } catch (e: Exception) {
+//                            callback.onError(e)
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call, e: IOException) {
+//                        callback.onError(e)
+//                    }
+//                })
+//    }
+//
+//
+//
+
+
 
     override fun getAllAsync(callback: PostRepository.GetAllCallback) {
         val request: Request = Request.Builder()
@@ -82,7 +111,6 @@ class PostRepositoryImpl: PostRepository {
                     override fun onResponse(call: Call, response: Response) {
                         val body = response.body?.string() ?: throw RuntimeException("body is null")
                         try {
-//                            callback.onSuccess(gson.fromJson(body, typeToken.type))
                             callback.onSuccess(gson.fromJson(body, Post::class.java))
                         } catch (e: Exception) {
                             callback.onError(e)
