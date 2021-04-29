@@ -60,6 +60,9 @@ dependencies {
     def okhttp_version = "4.9.1"
     def glide_version = "4.11.0"
     def picasso_version = "2.71828"
+    def retrofit_version = "2.9.0"
+    def retrofitgson_version = "2.9.0"
+    def okhttploggin_version = "4.9.1"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -81,6 +84,10 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitgson_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttploggin_version"
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "com.squareup.picasso:picasso:$picasso_version"
