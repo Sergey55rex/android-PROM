@@ -71,7 +71,6 @@ class PostRepositoryImpl: PostRepository {
                         }
                     }
                 }
-//                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
