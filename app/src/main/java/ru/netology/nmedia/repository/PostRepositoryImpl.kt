@@ -7,24 +7,17 @@ import retrofit2.Response
 import ru.netology.nmedia.api.PostsApi
 import ru.netology.nmedia.dto.Post
 
-
 class PostRepositoryImpl: PostRepository {
-
-    companion object {
-        internal const val BASE_URL = "http://10.0.2.2:9999"
-        private val jsonType = "application/json".toMediaType()
-    }
-
-
     override fun getAllAsync(callback: PostRepository.Callback<List<Post>>) {
         PostsApi.retrofitService.getAll().enqueue(object : Callback<List<Post>> {
             override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
                 if (!response.isSuccessful) {
-                    when (response.code()) {
-                        404 -> {
+                    when ((response.code()/100).toInt()) {
+                        4 -> {
                             callback.onError(RuntimeException(response.message()))
+                            return
                         }
-                        500 -> {
+                        5 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
@@ -40,11 +33,19 @@ class PostRepositoryImpl: PostRepository {
     }
 
     override fun saveAsync(post: Post, callback: PostRepository.Callback<Post>) {
-        PostsApi.retrofitService.save().enqueue(object : Callback<Post> {
+        PostsApi.retrofitService.save(post).enqueue(object : Callback<Post> {
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
                 if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(response.message()))
-                    return
+                    when ((response.code()/100).toInt()) {
+                        4 -> {
+                            callback.onError(RuntimeException(response.message()))
+                            return
+                        }
+                        5 -> {
+                            callback.onError(RuntimeException(response.message()))
+                            return
+                        }
+                    }
                 }
                 callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
             }
@@ -59,10 +60,18 @@ class PostRepositoryImpl: PostRepository {
         PostsApi.retrofitService.removeById(id).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(response.message()))
-                    return
+                    when ((response.code()/100).toInt()) {
+                        4 -> {
+                            callback.onError(RuntimeException(response.message()))
+                            return
+                        }
+                        5 -> {
+                            callback.onError(RuntimeException(response.message()))
+                            return
+                        }
+                    }
                 }
-                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
+//                callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -75,8 +84,16 @@ class PostRepositoryImpl: PostRepository {
         PostsApi.retrofitService.likeById(id).enqueue(object : Callback<Post> {
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
                 if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(response.message()))
-                    return
+                    when ((response.code()/100).toInt()) {
+                        4 -> {
+                            callback.onError(RuntimeException(response.message()))
+                            return
+                        }
+                        5 -> {
+                            callback.onError(RuntimeException(response.message()))
+                            return
+                        }
+                    }
                 }
                 callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
             }
@@ -87,3 +104,4 @@ class PostRepositoryImpl: PostRepository {
         })
     }
 }
+
