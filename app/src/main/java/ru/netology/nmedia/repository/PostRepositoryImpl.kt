@@ -15,7 +15,7 @@ class PostRepositoryImpl: PostRepository {
         private val jsonType = "application/json".toMediaType()
     }
 
-
+//  ghj,f
     override fun getAllAsync(callback: PostRepository.Callback<List<Post>>) {
         PostsApi.retrofitService.getAll().enqueue(object : Callback<List<Post>> {
             override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
