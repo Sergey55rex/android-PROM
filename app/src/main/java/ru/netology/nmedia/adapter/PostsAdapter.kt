@@ -13,6 +13,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import ru.netology.nmedia.BuildConfig
 import ru.netology.nmedia.repository.PostRepositoryImpl
 
 interface OnInteractionListener {
@@ -46,7 +47,7 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            avatar.loadCircleCrop("${PostRepositoryImpl.BASE_URL}/avatars/${post.authorAvatar}")
+            avatar.loadCircleCrop("${BuildConfig.BASE_URL}/avatars/${post.authorAvatar}")
             like.isChecked = post.likedByMe
             like.text = "${post.likes}"
 
