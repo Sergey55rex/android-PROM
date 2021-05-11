@@ -12,12 +12,12 @@ class PostRepositoryImpl: PostRepository {
         PostsApi.retrofitService.getAll().enqueue(object : Callback<List<Post>> {
             override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
                 if (!response.isSuccessful) {
-                    when ((response.code()/100).toInt()) {
-                        4 -> {
+                    when (response.code()) {
+                        in 400..499 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
-                        5 -> {
+                        in 500..599 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
@@ -36,12 +36,12 @@ class PostRepositoryImpl: PostRepository {
         PostsApi.retrofitService.save(post).enqueue(object : Callback<Post> {
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
                 if (!response.isSuccessful) {
-                    when ((response.code()/100).toInt()) {
-                        4 -> {
+                    when (response.code()) {
+                        in 400..499 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
-                        5 -> {
+                        in 500..599 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
@@ -60,12 +60,12 @@ class PostRepositoryImpl: PostRepository {
         PostsApi.retrofitService.removeById(id).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (!response.isSuccessful) {
-                    when ((response.code()/100).toInt()) {
-                        4 -> {
+                    when (response.code()) {
+                        in 400..499 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
-                        5 -> {
+                        in 500..599 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
@@ -83,12 +83,12 @@ class PostRepositoryImpl: PostRepository {
         PostsApi.retrofitService.likeById(id).enqueue(object : Callback<Post> {
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
                 if (!response.isSuccessful) {
-                    when ((response.code()/100).toInt()) {
-                        4 -> {
+                    when (response.code()) {
+                        in 400..499 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
-                        5 -> {
+                        in 500..599 -> {
                             callback.onError(RuntimeException(response.message()))
                             return
                         }
